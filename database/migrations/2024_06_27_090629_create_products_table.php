@@ -19,13 +19,14 @@ class CreateProductsTable extends Migration
             $table->string('type');
             $table->date('buy_date');
             $table->date('sell_date');
-            $table->bigInteger('length');
-            $table->bigInteger('width');
-            $table->bigInteger('height');
-            $table->bigInteger('weight');
+            $table->text('length');
+            $table->text('width');
+            $table->text('height');
+            $table->text('weight');
             $table->string('origin');
             $table->longText('description');
             $table->string('image');
+            $table->longText('qrcode')->nullable();
             $table->timestamps();
         });
     }

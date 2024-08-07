@@ -6,11 +6,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Starter Page</h1>
+            <h1 class="m-0">Products Page</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              
+              <a href="{{route('products.create')}}" class="btn btn-secondary">Create Product</a>
             </ol >
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -21,66 +21,80 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-
-                <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
-                </p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div><!-- /.card -->
-          </div>
-          <!-- /.col-md-6 -->
-          <div class="col-lg-6">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
-              </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
-
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-
-            <div class="card card-primary card-outline">
-              <div class="card-header">
-                <h5 class="m-0">Featured</h5>
-              </div>
-              <div class="card-body">
-                <h6 class="card-title">Special title treatment</h6>
-
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-          <!-- /.col-md-6 -->
-        </div>
+        <table class="table table-bordered table-striped" id="table">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Origin</th>
+              <th>Image</th>
+              <th>QrCode</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
   </div>
 @endsection
+@section('scripts')
+    <script>
+        var table = $('#table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url : "/products/",
+                error : function(xhr, textStatus, errorThrown) {
+                }
+            },
+            "columns" : [
+                {
+                    "data" : "id",
+                },
+                {
+                    "data" : "name",
+                },
+                {
+                    "data" : "type",
+                },
+                {
+                    "data" : "origin",
+                },
+                {
+                    "data" : "image",
+                },
+                {
+                  "data" : 'qrcode',
+                },
+                {
+                    "data" : "action",
+                }
+            ]
+        });
+        $(document).on('click','.delete',function(e){
+        e.preventDefault();
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Are you sure, you want to delete?',
+          showCancelButton: true,
+          confirmButtonText: 'Confirm',
+          
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url : '/products/' + id,
+              type : 'DELETE',
+              success : function(){
+                table.ajax.reload();
+              }
+            });
+          }
+        }
+      )
+      });
+    </script>
+    @endsection

@@ -16,6 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('backend.layouts.master');
 });
-Route::get('/products',function (){
-    return view('backend.products.index');
-});
+Route::resource('/products',App\Http\Controllers\ProductController::class);
+Route::get('/product-photos/{id}',[App\Http\Controllers\ProductController::class,'exportImage'])->name('image');

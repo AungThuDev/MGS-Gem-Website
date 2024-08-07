@@ -11,6 +11,8 @@
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/browsershot": "^3.61",
         "yajra/laravel-datatables": "^1.0"
     },
     "require-dev": {
